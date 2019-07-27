@@ -7,18 +7,11 @@ export interface iJugador{
     lastName: string;
     programa: iPrograma;
     rol: number;
-    resultado: number;
+    puntaje: number;
     email: string;
     pass: string;
     user: string;
     id?:string;
-}
-
-export interface iPuntaje{
-    jugador: string;
-    time: number;
-    puntaje: number;
-    id?: string;
 }
 
 export interface iPregunta{
@@ -29,8 +22,10 @@ export interface iPregunta{
 }
 
 export interface iPartida{
-    persona: string;
+    jugador: string;
     preguntas: iPregunta[];
+    time: number;
+    puntaje: number;
     estado: number;
     id?: string;
 }
