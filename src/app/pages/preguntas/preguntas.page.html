@@ -1,7 +1,7 @@
 <ion-header no-border>
   <ion-toolbar>
     <!-- <ion-title mode="md">preguntas</ion-title> -->
-    <ion-title>pregunta 1/50</ion-title>
+    <ion-title>pregunta {{indexPregunta+1}}/50</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="openHelp()" shape="round" color="primary" style="border: 1px solid green; border-radius: 50%" size="small">
         <ion-icon slot="icon-only" name="help"></ion-icon>
@@ -14,17 +14,18 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let pregunta of preguntas; let p = index">
+    <!-- *ngFor="let pregunta of preguntas; indexPregunta = index" -->
+  <ion-card >
     <ion-card-header>
-      <ion-card-title>{{p+1}}) {{pregunta.descripcion}}</ion-card-title>
+      <ion-card-title>{{indexPregunta+1}}) {{preguntas[indexPregunta].descripcion}}</ion-card-title>
     </ion-card-header>
       <ion-card-content>
         <ion-list lines="none">
-          <ion-radio-group name="auto" (ionChange)="show($event.detail.value, p)">
+          <ion-radio-group name="auto" (ionChange)="show($event.detail.value)">
             <ion-list id="radiOpcion">
-                <ion-item *ngFor="let item of pregunta.opciones; let i = index">
-                    <p>{{item}}</p>
-                    <ion-radio value="{{i+1}}" slot="start"></ion-radio>
+                <ion-item *ngFor="let item of preguntas[indexPregunta].opciones; let i = index">
+                  <p>{{item}}</p>
+                  <ion-radio value="{{i+1}}" slot="start" [checked]="stateOpc"></ion-radio>
                 </ion-item>
             </ion-list>
           </ion-radio-group>
@@ -41,7 +42,7 @@
         </ion-button>
       </ion-col>
       <ion-col>
-        <ion-button (click)="enviar()" expand="block" shape="round" color="tertiary" [disabled]="btnContinuar">
+        <ion-button (click)="continuar()" expand="block" shape="round" color="tertiary" [disabled]="btnContinuar">
           Continuar
         </ion-button>
       </ion-col>
