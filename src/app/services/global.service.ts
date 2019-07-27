@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { iJugador } from '../interfaces/interface';
+import { iPersona } from '../interfaces/interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
-  jugador: iJugador = <iJugador>{};
+  jugador: iPersona = <iPersona>{};
   constructor(private toast: ToastController) { }
 
   async mensaje(text: string, duration: number, css?: string) {

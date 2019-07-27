@@ -2,7 +2,7 @@ export interface iPrograma{
     id: string;
     name: string
 }
-export interface iJugador{
+export interface iPersona{
     name: string;
     lastName: string;
     programa: string;
@@ -12,4 +12,11 @@ export interface iJugador{
     pass: string;
     user: string;
     id?:string;
+}
+
+export interface iPregunta{
+    id?: number;
+    descripcion: string;
+    opciones: string[];
+    respuesta: number;
 }

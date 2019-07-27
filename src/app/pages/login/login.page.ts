@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { LogueoService } from 'src/app/services/logueo.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { BdService } from 'src/app/services/bd.service';
-import { iJugador } from 'src/app/interfaces/interface';
+import { iPersona } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   loguearse(){
     const user = `${this.user.user}@unicesar.edu.co`
     this.logueo.loginUser(user, this.user.pass).then((auth)=>{
-      this.bd.getDato('jugadores', auth.user.uid).subscribe((jug: iJugador)=>{
+      this.bd.getDato('personas', auth.user.uid).subscribe((jug: iPersona)=>{
         this.global.jugador = jug;
         // this.route.navigate(['/menu']);
         console.log('yes');

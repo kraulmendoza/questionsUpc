@@ -3,7 +3,7 @@ import { LogueoService } from 'src/app/services/logueo.service';
 import { BdService } from 'src/app/services/bd.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/services/global.service';
-import { iJugador } from 'src/app/interfaces/interface';
+import { iPersona } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-registrarse',
@@ -29,7 +29,7 @@ export class RegistrarsePage implements OnInit {
     };
 
   formAdd : FormGroup;
-  user: iJugador;
+  user: iPersona;
   constructor(private loginSer: LogueoService, private db: BdService, private globalSer: GlobalService) { }
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class RegistrarsePage implements OnInit {
         user: form.get('user').value,
         pass: form.get('pass').value,
         rol: 0
-      }  as iJugador
+      }  as iPersona
   }
 
   public add(){
@@ -64,7 +64,7 @@ export class RegistrarsePage implements OnInit {
       this.loginSer.createUser(user, this.user.pass)
         .then((res) => {
           this.user.id = res.user.uid;
-          this.db.add('jugadores', this.user, 1, res.user.uid)
+          this.db.add('personas', this.user, 1, res.user.uid)
           .then(() => {
             this.globalSer.mensaje('se ha registrado con exito', 3000, 'success');
             this.formAdd.reset();
