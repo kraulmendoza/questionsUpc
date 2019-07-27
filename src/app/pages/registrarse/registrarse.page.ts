@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { LogueoService } from 'src/app/services/logueo.service';
 import { BdService } from 'src/app/services/bd.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IPersona } from 'src/app/interfaz/interface';
 import { GlobalService } from 'src/app/services/global.service';
+import { iJugador } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-registrarse',
@@ -29,37 +29,34 @@ export class RegistrarsePage implements OnInit {
     };
 
   formAdd : FormGroup;
-  user: IPersona;
+  user: iJugador;
   constructor(private loginSer: LogueoService, private db: BdService, private globalSer: GlobalService) { }
 
   ngOnInit() {
     this.formAdd = new FormGroup({
-      pName: new FormControl('', Validators.compose([Validators.required])),
-      sName: new FormControl(''),
-      pLastName: new FormControl('', Validators.compose([Validators.required])),
-      sLastName: new FormControl('', Validators.compose([Validators.required])),
-      tel: new FormControl('', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9)])),
+      name: new FormControl('', Validators.compose([Validators.required])),
+      lastName: new FormControl('', Validators.compose([Validators.required])),
+      programa: new FormControl('', Validators.compose([Validators.required])),
       user: new FormControl('', Validators.compose([Validators.required])),
+      email: new FormControl('', Validators.compose([Validators.required])),
       pass: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5)])),
     });
   }
   
-  cobroJson(form: FormGroup) {
+  jugadorJson(form: FormGroup) {
       return {
-        primerNombre: form.get('pName').value,
-        segundoNombre: form.get('sName').value,
-        primerApellido: form.get('pLastName').value,
-        segundoApellido: form.get('sLastName').value,
-        telefono: form.get('tel').value,
+        name: form.get('name').value,
+        lastName: form.get('lastName').value,
+        programa: form.get('programa').value,
+        email: form.get('email').value,
         user: form.get('user').value,
         pass: form.get('pass').value,
-        estado: true,
         rol: 0
-      }  as IPersona;
+      }  as iJugador
   }
 
   public add(){
-    this.user = this.cobroJson(this.formAdd);
+    this.user = this.jugadorJson(this.formAdd);
     // if (this.usuario.password !== this.formCobro.get('confirmPassword').value) {
     //   this.globalSer.mensaje('las contraseñas no son iguales', 3000, ' danger');
     // } else {
@@ -67,7 +64,7 @@ export class RegistrarsePage implements OnInit {
       this.loginSer.createUser(user, this.user.pass)
         .then((res) => {
           this.user.id = res.user.uid;
-          this.db.add('persona', this.user, 1, res.user.uid)
+          this.db.add('jugadores', this.user, 1, res.user.uid)
           .then(() => {
             this.globalSer.mensaje('se ha registrado con exito', 3000, 'success');
             this.formAdd.reset();

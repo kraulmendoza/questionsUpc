@@ -5,7 +5,7 @@ export interface iPrograma{
 export interface iJugador{
     name: string;
     lastName: string;
-    programa: iPrograma;
+    programa: string;
     rol: number;
     resultado: number;
     email: string;

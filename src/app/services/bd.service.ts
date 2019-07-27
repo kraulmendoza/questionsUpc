@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore, AngularFirestoreModule, AngularFirestoreCollection} from '@angular/fire/firestore';
-import { IAsignatura } from '../interfaz/interface';
 import { map } from 'rxjs/operators';
 
 @Injectable({

@@ -6,7 +6,7 @@ import { iJugador } from '../interfaces/interface';
   providedIn: 'root'
 })
 export class GlobalService {
-  persona: iJugador = <iJugador>{};
+  jugador: iJugador = <iJugador>{};
   constructor(private toast: ToastController) { }
 
   async mensaje(text: string, duration: number, css?: string) {

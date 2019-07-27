@@ -29,9 +29,10 @@ export class LoginPage implements OnInit {
   loguearse(){
     const user = `${this.user.user}@unicesar.edu.co`
     this.logueo.loginUser(user, this.user.pass).then((auth)=>{
-      this.bd.getDato('persona', auth.user.uid).subscribe((per: iJugador)=>{
-        this.global.persona = per;
-        this.route.navigate(['/menu']);
+      this.bd.getDato('jugadores', auth.user.uid).subscribe((jug: iJugador)=>{
+        this.global.jugador = jug;
+        // this.route.navigate(['/menu']);
+        console.log('yes');
       })
     })
     .catch(_=>this.global.mensaje('Usuario y/o contraseña incorrecta', 3000, 'danger'))
