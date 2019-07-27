@@ -43,7 +43,7 @@ export class RegistrarsePage implements OnInit {
     });
   }
   
-  jugadorJson(form: FormGroup) {
+  personaJson(form: FormGroup) {
       return {
         name: form.get('name').value,
         lastName: form.get('lastName').value,
@@ -51,15 +51,14 @@ export class RegistrarsePage implements OnInit {
         email: form.get('email').value,
         user: form.get('user').value,
         pass: form.get('pass').value,
+        estado: true,
+        puntaje: 0,
         rol: 0
-      }  as iPersona
+      }  as iPersona;
   }
 
   public add(){
-    this.user = this.jugadorJson(this.formAdd);
-    // if (this.usuario.password !== this.formCobro.get('confirmPassword').value) {
-    //   this.globalSer.mensaje('las contraseñas no son iguales', 3000, ' danger');
-    // } else {
+    this.user = this.personaJson(this.formAdd);
       const user = `${this.user.user}@unicesar.edu.co`;
       this.loginSer.createUser(user, this.user.pass)
         .then((res) => {

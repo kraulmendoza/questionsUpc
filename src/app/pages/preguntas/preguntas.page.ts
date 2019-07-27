@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { iPregunta } from 'src/app/interfaces/interface';
 import { ActionSheetController } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
+import { iPregunta } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-preguntas',
@@ -9,18 +9,7 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrls: ['./preguntas.page.scss'],
 })
 export class PreguntasPage implements OnInit {
-  preguntas: iPregunta[] = [
-    {
-      descripcion: '¿cuando es 2 +2?',
-      opciones: ['1','2','3','4'],
-      respuesta: 2
-    },
-    {
-      descripcion: '¿cuando es 6 +2?',
-      opciones: ['5','2','3','8'],
-      respuesta: 4
-    }
-  ];
+  preguntas: iPregunta[] = [];
   indexPregunta = 0;
   btnContinuar = true;
   duracion = 15;
@@ -59,17 +48,8 @@ export class PreguntasPage implements OnInit {
         {
           text: 'Pedir ayuda a un amigo',
           handler: () => {
-
           }
-        },{
-          text: 'Quitar 2 opciones',
-          handler: () => {
-
-          }
-        }
-      ]
-    });
-    return await action.present();
+        }]});
   }
   show(res) {
     this.respuesta = parseInt(res);
