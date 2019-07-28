@@ -1,6 +1,9 @@
-<ion-header>
+<ion-header no-border>
   <ion-toolbar>
-    <ion-title>addPreguntas</ion-title>
+    <ion-title>Preguntas</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -9,7 +12,7 @@
   <div [ngSwitch]="segment">
       <ng-container *ngSwitchCase="'add'">
         <form [formGroup]="formPregunta" (submit)="add()" novalidate>
-        <ion-item>
+        <ion-item *ngIf="global.persona.rol == 2">
           <ion-label>Programa</ion-label>
           <ion-select placeholder="Seleccionar programa" interface="popover" formControlName="programaId">
             <ion-select-option *ngFor="let programa of programas" value="{{programa.id}}">{{programa.name}}</ion-select-option>
@@ -52,8 +55,21 @@
         </form>
       </ng-container>
       <ng-container *ngSwitchCase="'show'">
-        <ion-list padding>
-          
+        <ion-item *ngIf="global.persona.rol == 2">
+          <ion-label>Programa</ion-label>
+          <ion-select placeholder="Seleccionar programa" interface="popover" [(ngModel)]="searchPrograma">
+            <ion-select-option *ngFor="let programa of programas" value="{{programa.id}}">{{programa.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-list padding-top>
+          <ng-container *ngFor="let programa of programas">
+            <ng-container *ngIf="programa.id === searchPrograma">
+                <ion-item *ngFor="let pregunta of programa.preguntas; let i = index" lines="none">
+                    <ion-note slot="start">{{i+1}}</ion-note>
+                    <ion-label text-wrap>{{pregunta.descripcion}}</ion-label>
+                  </ion-item>
+            </ng-container>
+          </ng-container>
         </ion-list>
       </ng-container>
   </div>

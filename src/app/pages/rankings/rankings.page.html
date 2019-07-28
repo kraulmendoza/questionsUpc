@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>rankings</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event.detail.value)" scrollable="true" color="primary" [(ngModel)]="segment">
+      <ion-segment-button value="-1">
+        <ion-label>Gloabal</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="{{global.persona.programa}}">
+        <ion-label>Programa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="0">
+        <ion-label>Facil</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        <ion-label>Intermedio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-label>Dificil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let jugador of jugadoresAux">
+      <ion-label>
+        <h2>{{jugador.user}}</h2>
+        <p>{{getPrograma(jugador.programa)}}</p>
+      </ion-label>
+      <ion-label slot="end" text-right>
+        <h2>{{getNivel(jugador.puntajes)}}</h2>
+        <p>{{getPuntaje(jugador.puntajes)}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -7,13 +7,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', canActivate:[LoginGuard], loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'registrarse', loadChildren: './pages/registrarse/registrarse.module#RegistrarsePageModule' },
-  { path: 'menu', loadChildren: './pages/menu/menu.module#MenuPageModule' },
-  { path: 'preguntas/:level', loadChildren: './pages/preguntas/preguntas.module#PreguntasPageModule' },
-  { path: 'add-preguntas', loadChildren: './pages/add-preguntas/add-preguntas.module#AddPreguntasPageModule' },
+  { path: 'menu', canActivate:[AuthGuard], loadChildren: './pages/menu/menu.module#MenuPageModule' },
   { path: 'crear-partida', loadChildren: './pages/crear-partida/crear-partida.module#CrearPartidaPageModule' },
-  { path: 'programa', loadChildren: './pages/programa/programa.module#ProgramaPageModule' },
-  { path: 'principal', canActivate:[AuthGuard], loadChildren: './pages/principal/principal.module#PrincipalPageModule' },
-
 ];
 
 @NgModule({

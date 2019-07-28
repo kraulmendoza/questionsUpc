@@ -23,7 +23,9 @@ export class PrincipalPage implements OnInit {
   }
 
   jugar(){
-    this.router.navigate(['/preguntas', this.level])
+    if (this.level !== '') {
+      this.router.navigate(['/preguntas', this.level]); 
+    }else {this.global.mensaje('Debe seleccionar un nivel', 2000, 'danger')}
   }
 
 }

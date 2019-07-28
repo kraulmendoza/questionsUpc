@@ -28,9 +28,18 @@ export class BdService {
     return collection;
   }
 
-  public getList(tabla: string){
+  public getList(tabla: string, tipo?:number, idPrograma?: string){
     let obj;
-    return this.firestore.collection(tabla).snapshotChanges().pipe(map(List=>{
+    let lista: AngularFirestoreCollection;
+    switch (tipo) {
+      case 1:
+          lista = this.firestore.collection('programas').doc(idPrograma).collection(tabla);
+        break;
+      default:
+        lista = this.firestore.collection(tabla);
+        break;
+    }
+    return lista.snapshotChanges().pipe(map(List=>{
         return List.map(event=>{
           obj = event.payload.doc.data(),
           obj.id = event.payload.doc.id
@@ -66,4 +75,13 @@ export class BdService {
   public updatePuntaje(id:string, puntjes: number[]){
     return this.firestore.collection('personas').doc(id).update({puntajes: puntjes})
   }
+
+
+
+
+
+
+  // public whereAsesorias(){
+  //   return this.firestore.collection("docentes", ref => ref.where("horaAsesoria","==","8")).valueChanges();
+  // }
 }

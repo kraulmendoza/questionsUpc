@@ -1,7 +1,9 @@
 export interface iPrograma{
     id: string;
-    name: string
+    name: string;
+    abreviatura: string;
     partida: IPartida;
+    preguntas?: iPregunta[]
 }
 export interface iPersona{
     name: string;

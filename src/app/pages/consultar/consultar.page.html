@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>consultar</ion-title>
+    <ion-buttons slot="start">
+        <ion-menu-button menu="menuId"></ion-menu-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>Cantidad de Programas:</ion-label>
+      <ion-note slot="end" color="primary">{{programas.length}}</ion-note>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Cantidad de Prguntas:</ion-label>
+      <ion-note slot="end" color="primary">{{preguntaLen}}</ion-note>
+    </ion-item>
+    <ion-item text-center lines="none">
+      <ion-text color="primary">
+        <h1>Programas</h1>
+      </ion-text>
+    </ion-item>
+    <ion-item *ngFor="let programa of programas" lines="none">
+        <ion-label>{{programa.name}}</ion-label>
+        <ion-note slot="end" color="secundary">{{programa.preguntas.length}}</ion-note>
+      </ion-item>
+  </ion-list>
+</ion-content>

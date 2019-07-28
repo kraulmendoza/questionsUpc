@@ -1,10 +1,13 @@
 <ion-header translucent="true" no-border>
   <ion-toolbar mode="ios" style="--min-height: 25px">
     <!-- <ion-title>{{programa.name}}</ion-title> -->
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menuId"></ion-menu-button>
+    </ion-buttons>
     <ion-title>Preguntas UPC</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="onClick()">
-        <ion-icon slot="start" name="add"></ion-icon>
+        <ion-icon name="exit" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

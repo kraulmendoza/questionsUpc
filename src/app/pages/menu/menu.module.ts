@@ -10,7 +10,16 @@ import { MenuPage } from './menu.page';
 const routes: Routes = [
   {
     path: '',
-    component: MenuPage
+    component: MenuPage,
+    children:[
+      { path: 'preguntas/:level', loadChildren: '../preguntas/preguntas.module#PreguntasPageModule' },
+      { path: 'principal', loadChildren: '../principal/principal.module#PrincipalPageModule' },
+      { path: 'programa', loadChildren: '../programa/programa.module#ProgramaPageModule' },
+      { path: 'add-preguntas', loadChildren: '../add-preguntas/add-preguntas.module#AddPreguntasPageModule' },
+      { path: 'consultar', loadChildren: '../consultar/consultar.module#ConsultarPageModule' },
+      { path: 'add-user', loadChildren: '../add-user/add-user.module#AddUserPageModule' },
+      { path: 'rankings', loadChildren: '../rankings/rankings.module#RankingsPageModule' },
+    ]
   }
 ];
 

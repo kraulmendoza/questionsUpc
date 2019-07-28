@@ -14,10 +14,13 @@ export class AddPreguntasPage implements OnInit {
   segment = 'add';
   programas: iPrograma[] = [];
   pregunta: iPregunta = <iPregunta> {};
+  preguntas: iPregunta[] = [];
   idPrograma = '';
   formPregunta: FormGroup;
   respuesta = '0';
-  constructor(private db: BdService, private global: GlobalService) { }
+  numPreguntas = 0;
+  searchPrograma  = '';
+  constructor(private db: BdService, public global: GlobalService) { }
 
   ngOnInit() {
     this.formPregunta = new FormGroup({
@@ -26,15 +29,28 @@ export class AddPreguntasPage implements OnInit {
       time: new FormControl(60, Validators.compose([Validators.required, Validators.min(60), Validators.max(180)])),
       level: new FormControl('1', Validators.compose([Validators.required])),
     });
+    if (this.global.persona.rol === 1) {
+      this.formPregunta.get('programaId').setValue(this.global.persona.programa);
+    }
     this.pregunta.opciones = new Array(4);
     this.loadProgramas();
+    this.searchPrograma = this.global.persona.programa;
   }
 
   loadProgramas(){
     this.db.getList('programas').subscribe((programas:iPrograma[]) => {
       this.programas = [];
-      programas.forEach(programa => {
+      this.preguntas = [];
+      programas.forEach((programa, index) => {
         this.programas.push(programa);
+        this.programas[index].preguntas = [];
+        this.db.getList('preguntas',1,programa.id).subscribe((preguntas:iPregunta[])=>{
+          preguntas.forEach(pre => {
+            this.preguntas.push(pre);
+          });
+          this.programas[index].preguntas = [];
+          this.programas[index].preguntas = preguntas;
+        })
       });
     });
   }
