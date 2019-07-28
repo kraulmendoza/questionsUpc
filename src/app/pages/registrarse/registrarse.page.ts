@@ -3,7 +3,7 @@ import { LogueoService } from 'src/app/services/logueo.service';
 import { BdService } from 'src/app/services/bd.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/services/global.service';
-import { iPersona } from 'src/app/interfaces/interface';
+import { iPersona, iPrograma } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-registrarse',
@@ -30,6 +30,7 @@ export class RegistrarsePage implements OnInit {
 
   formAdd : FormGroup;
   user: iPersona;
+  programas: iPrograma[] = [];
   constructor(private loginSer: LogueoService, private db: BdService, private globalSer: GlobalService) { }
 
   ngOnInit() {
@@ -41,6 +42,7 @@ export class RegistrarsePage implements OnInit {
       email: new FormControl('', Validators.compose([Validators.required])),
       pass: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5)])),
     });
+    this.loadProgramas();
   }
   
   personaJson(form: FormGroup) {
@@ -52,14 +54,23 @@ export class RegistrarsePage implements OnInit {
         user: form.get('user').value,
         pass: form.get('pass').value,
         estado: true,
-        puntaje: 0,
+        puntajes: [0,0,0],
         rol: 0
       }  as iPersona;
   }
 
+  loadProgramas(){
+    this.db.getList('programas').subscribe((programas:iPrograma[]) => {
+      this.programas = [];
+      programas.forEach(programa => {
+        this.programas.push(programa);
+      });
+    });
+  }
+
   public add(){
     this.user = this.personaJson(this.formAdd);
-      const user = `${this.user.user}@unicesar.edu.co`;
+      const user = `${this.user.email}@unicesar.edu.co`;
       this.loginSer.createUser(user, this.user.pass)
         .then((res) => {
           this.user.id = res.user.uid;

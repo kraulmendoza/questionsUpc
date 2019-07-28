@@ -17,8 +17,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 
 import {BdService} from './services/bd.service';
 import { LogueoService } from './services/logueo.service';
-// import { AuthGuard } from './guard/auth.guard';
-// import { LoginGuard } from './guard/login.guard';
+import { AuthGuard } from './guard/auth.guard';
+import { LoginGuard } from './guard/login.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,8 +27,8 @@ import { LogueoService } from './services/logueo.service';
   providers: [
     StatusBar,
     SplashScreen,
-    // AuthGuard,
-    // LoginGuard,
+    AuthGuard,
+    LoginGuard,
     BdService,
     LogueoService,
     AngularFirestore,

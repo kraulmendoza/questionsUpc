@@ -1,31 +1,37 @@
 export interface iPrograma{
     id: string;
     name: string
+    partida: IPartida;
 }
 export interface iPersona{
     name: string;
     lastName: string;
     programa: string;
     rol: number;
-    puntaje: number;
     email: string;
     pass: string;
     user: string;
     id?:string;
+    puntajes?: number[];
 }
 
 export interface iPregunta{
     id?: number;
-    descipcion: string;
+    descripcion: string;
     opciones: string[];
-    respuesta: number; 
+    respuesta: number;
+    time: number;
+    level: number;
 }
 
 export interface iPartida{
-    jugador: string;
     preguntas: iPregunta[];
-    time: number;
-    puntaje: number;
-    estado: number;
+    programa: string;
+    puntajes?: [10, 20, 30];
     id?: string;
+}
+
+export interface IPartida{
+    level: number[],
+    puntajes: number[]
 }

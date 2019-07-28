@@ -21,7 +21,7 @@
       <ion-item>
           <ion-label>Programa</ion-label>
           <ion-select placeholder="Seleccionar carrera" interface="popover" formControlName="programa">
-            <ion-select-option value="ingSis">Ingeniería de sistemas</ion-select-option>
+            <ion-select-option *ngFor="let programa of programas" value="{{programa.id}}">{{programa.name}}</ion-select-option>
           </ion-select>
       </ion-item>
       <ion-item>

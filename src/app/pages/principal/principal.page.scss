@@ -1,0 +1,12 @@
+.bg-image {
+    --background: url('../../../assets//imgs/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  .no-scroll .scroll-content {
+    overflow: hidden;
+  }
+
+  ion-item{
+      --background: transparent;
+      --ion-color-base: transparent !important;
+  }

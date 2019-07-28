@@ -31,7 +31,8 @@ export class LoginPage implements OnInit {
     this.logueo.loginUser(user, this.user.pass).then((auth)=>{
       this.bd.getDato('personas', auth.user.uid).subscribe((per: iPersona)=>{
         this.global.persona = per;
-        this.route.navigate(['/menu']);
+        console.log(per);
+        this.route.navigate(['/principal']);
       })
     })
     .catch(_=>this.global.mensaje('Usuario y/o contraseña incorrecta', 3000, 'danger'))

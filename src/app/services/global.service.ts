@@ -9,11 +9,12 @@ export class GlobalService {
   persona: iPersona = <iPersona>{};
   constructor(private toast: ToastController) { }
 
-  async mensaje(text: string, duration: number, css?: string) {
+  async mensaje(text: string, duration: number, css: string) {
     const t = await this.toast.create({
       message: text,
       duration: duration,
-      color: css
+      color: css,
+      position: "top",
     });
     t.present();
   }

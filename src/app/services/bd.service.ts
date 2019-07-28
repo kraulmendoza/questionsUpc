@@ -12,11 +12,14 @@ export class BdService {
   constructor(public firestore:AngularFirestore) { }
 
 
-  public add(tabla: string, datos, tipo?: number, id?: string) {
+  public add(tabla: string, datos, tipo?: number, id?: string, idPrograma?: string) {
     let collection;
     switch (tipo) {
       case 1:
           collection = this.firestore.collection(tabla).doc(id).set(datos);
+        break;
+      case 2:
+          collection = this.firestore.collection('programas').doc(idPrograma).collection(tabla).add(datos);
         break;
       default:
           collection = this.firestore.collection(tabla).add(datos);
@@ -38,10 +41,18 @@ export class BdService {
   public getDato(tabla: string, id: string){
     return this.firestore.collection(tabla).doc(id).valueChanges();
   }
-  public selectWhereRol(tabla:string, cond: string, comp: number){
+  public selectWhere(tabla:string, cond: string, comp, tipo?: number, id?: string){
     let obj;
     let lista: AngularFirestoreCollection;
-    lista = this.firestore.collection(tabla, ref => ref.where(cond, '==', comp));
+    
+    switch (tipo) {
+      case 1:
+          lista = this.firestore.collection('programas').doc(id).collection(tabla, ref => ref.where(cond, '==', comp));
+        break;
+      default:
+          lista = this.firestore.collection(tabla, ref => ref.where(cond, '==', comp));
+        break;
+    }
     const dato = lista.snapshotChanges().pipe(map((List) => {
         return List.map((dat) => {
             obj = dat.payload.doc.data();
@@ -50,5 +61,9 @@ export class BdService {
         });
     }));
     return dato;
+  }
+
+  public updatePuntaje(id:string, puntjes: number[]){
+    return this.firestore.collection('personas').doc(id).update({puntajes: puntjes})
   }
 }

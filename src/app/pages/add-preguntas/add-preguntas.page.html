@@ -6,4 +6,67 @@
 
 <ion-content>
 
+  <div [ngSwitch]="segment">
+      <ng-container *ngSwitchCase="'add'">
+        <form [formGroup]="formPregunta" (submit)="add()" novalidate>
+        <ion-item>
+          <ion-label>Programa</ion-label>
+          <ion-select placeholder="Seleccionar programa" interface="popover" formControlName="programaId">
+            <ion-select-option *ngFor="let programa of programas" value="{{programa.id}}">{{programa.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-card>
+          <ion-card-content>
+            <ion-list>
+              <ion-item>
+                <ion-label position="floating">Pregunta: </ion-label>
+                <ion-textarea formControlName="descripcion"></ion-textarea>
+              </ion-item>
+              <ion-radio-group name="auto" [(ngModel)]="respuesta" [ngModelOptions]="{standalone: true}">
+                <ion-list id="radiOpcion">
+                    <ion-item *ngFor="let item of opciones; let i = index">
+                        <ion-input type="text" placeholder="Opción {{i+1}}" [(ngModel)]="pregunta.opciones[i]" [ngModelOptions]="{standalone: true}"></ion-input>
+                        <ion-radio value="{{i+1}}" slot="start"></ion-radio>
+                    </ion-item>
+                </ion-list>
+              </ion-radio-group>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+        <ion-item>
+            <ion-label>Dificultad de la pregunta</ion-label>
+            <ion-select interface="popover" formControlName="level">
+              <ion-select-option value="1">Facil</ion-select-option>
+              <ion-select-option value="2">Intermedio</ion-select-option>
+              <ion-select-option value="2">Dificil</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Duración de la pregunta (segundos)</ion-label>
+            <ion-input type="number" formControlName="time" min="60" max="180"></ion-input>
+          </ion-item>
+          <p>La Duración de la pregunta debe ser minimo 1 minuto y maximo 3</p>
+          <ion-button type="submit" expand="block" shape="round" [disabled]="formPregunta.invalid || respuesta === '0'">
+            agregar
+          </ion-button>
+        </form>
+      </ng-container>
+      <ng-container *ngSwitchCase="'show'">
+        <ion-list padding>
+          
+        </ion-list>
+      </ng-container>
+  </div>
 </ion-content>
+<ion-footer no-border>
+    <ion-toolbar>
+        <ion-segment (ionChange)="selectSement($event.detail.value)" value="add">
+          <ion-segment-button value="add">
+            <ion-label>Agregar Preguntas</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="show">
+            <ion-label>Preguntas</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+  </ion-footer>
