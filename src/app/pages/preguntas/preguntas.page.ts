@@ -229,10 +229,11 @@ export class PreguntasPage implements OnInit {
       preguntas.forEach(pregunta => {
         pregs.push(pregunta);
       });
-      this.preguntas = pregs;
+      this.preguntas = this.desordenar(pregs);
       this.pregunta = this.preguntas[this.indexPregunta];
       this.duracion = this.preguntas[this.indexPregunta].time;
       this.preguntasLen = this.preguntas.length;
+      console.log(this.preguntas);
       this.loadDuraciones();
     })
   }
