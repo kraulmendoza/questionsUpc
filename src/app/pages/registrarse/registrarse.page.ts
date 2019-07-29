@@ -71,19 +71,27 @@ export class RegistrarsePage implements OnInit {
   public add(){
     this.user = this.personaJson(this.formAdd);
       const user = `${this.user.email}@unicesar.edu.co`;
-      this.loginSer.createUser(user, this.user.pass)
-        .then((res) => {
-          this.user.id = res.user.uid;
-          this.db.add('personas', this.user, 1, res.user.uid)
-          .then(() => {
-            this.globalSer.mensaje('se ha registrado con exito', 3000, 'success');
-            this.formAdd.reset();
-          }).catch(() => {
-            this.globalSer.mensaje('No se pudo registrar el ususario', 3000, 'danger');
+      this.db.selectWhere('personas', 'user', this.user.user).subscribe((users:iPersona[])=>{
+        if (users.length === 0) {
+          this.loginSer.createUser(user, this.user.pass)
+            .then((res) => {
+              this.user.id = res.user.uid;
+              this.db.add('personas', this.user, 1, res.user.uid)
+              .then(() => {
+                this.globalSer.mensaje('se ha registrado con exito', 3000, 'success');
+                this.formAdd.reset();
+              }).catch(() => {
+                this.globalSer.mensaje('No se pudo registrar el ususario', 3000, 'danger');
+              });
+            }).catch(() => {
+              this.globalSer.mensaje('No se pudo crear el usuario', 3000, 'danger');
           });
-        }).catch(() => {
-          this.globalSer.mensaje('No se pudo crear el usuario', 3000, 'danger');
+        }
+        else {
+          this.globalSer.mensaje('Este usuario ya existe', 3000, 'danger');
+        }
       });
+      
     }
   // }
 

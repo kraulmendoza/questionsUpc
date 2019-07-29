@@ -3,6 +3,7 @@ import { BdService } from 'src/app/services/bd.service';
 import { iPrograma, iPregunta } from 'src/app/interfaces/interface';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GlobalService } from 'src/app/services/global.service';
+import { IonItemSliding, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-preguntas',
@@ -20,7 +21,8 @@ export class AddPreguntasPage implements OnInit {
   respuesta = '0';
   numPreguntas = 0;
   searchPrograma  = '';
-  constructor(private db: BdService, public global: GlobalService) { }
+  namePrograma = '';
+  constructor(private db: BdService, public global: GlobalService, private alerta: AlertController) { }
 
   ngOnInit() {
     this.formPregunta = new FormGroup({
@@ -42,6 +44,9 @@ export class AddPreguntasPage implements OnInit {
       this.programas = [];
       this.preguntas = [];
       programas.forEach((programa, index) => {
+        if (programa.id == this.global.persona.programa) {
+          this.namePrograma = programa.name;
+        }
         this.programas.push(programa);
         this.programas[index].preguntas = [];
         this.db.getList('preguntas',1,programa.id).subscribe((preguntas:iPregunta[])=>{
@@ -55,7 +60,6 @@ export class AddPreguntasPage implements OnInit {
     });
   }
 
-
   preguntaJson(form: FormGroup){
     this.pregunta.descripcion = form.get('descripcion').value;
     this.pregunta.level = parseInt(form.get('level').value);
@@ -63,15 +67,42 @@ export class AddPreguntasPage implements OnInit {
     this.pregunta.respuesta = parseInt(this.respuesta);
   }
 
+  limpiarFormulario(form: FormGroup){
+    form.get('descripcion').setValue('');
+    this.pregunta.opciones = [];
+    this.respuesta = '';
+  }
+
   add(){
     this.preguntaJson(this.formPregunta);
-    console.log(this.pregunta);
-    console.log(this.formPregunta.get('programaId').value)
     this.db.add('preguntas', this.pregunta, 2, '', this.formPregunta.get('programaId').value).then(_=>{
       this.global.mensaje('Se registro de forma exitosa', 2000, 'success');
+      this.limpiarFormulario(this.formPregunta);
     }).catch(_=>this.global.mensaje('No se pudo registrar la pregunta', 2000, 'danger'))
   }
   selectSement(e){
     this.segment = e;
+  }
+
+  async delete(slidingItem: IonItemSliding, pregunta: iPregunta, idPrograma: string) {
+    slidingItem.close();
+    console.log(`pregunta: ${pregunta.id} - idPrograma: ${idPrograma}`)
+    // aqui teniendo el docente o cualquier objeto, obtienes el id y lo puedes eliminar
+    const alert = await this.alerta.create({
+      header: 'Eliminar Pregunta',
+      subHeader: 'Estas a punto de eliminar esta pregunta estas seguro ?',
+      buttons: [
+        {
+          text: 'Confirmar',
+          role: 'Confirmar',
+          cssClass: 'primary',
+          handler: () => {
+            this.db.deleteQuestion(pregunta.id,idPrograma).then(_=>{this.global.mensaje('Ha eliminado la pregunta',2000, 'success')})
+            .catch(_=>{this.global.mensaje('Error no se pudo eliminar la pregunta',2000, 'danger')});
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

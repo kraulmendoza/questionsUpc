@@ -4,6 +4,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { iPregunta, iPrograma } from 'src/app/interfaces/interface';
 import { BdService } from 'src/app/services/bd.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-preguntas',
@@ -32,7 +33,7 @@ export class PreguntasPage implements OnInit {
   constructor(private actionSheet: ActionSheetController,
     private global: GlobalService, private db: BdService,
     private activeRoute: ActivatedRoute, private alert: AlertController,
-    private router: Router) { }
+    private router: Router, private share: SocialSharing) { }
 
   ngOnInit() {
     this.level = parseInt(this.activeRoute.snapshot.paramMap.get('level'));
@@ -51,7 +52,7 @@ export class PreguntasPage implements OnInit {
         clearInterval(this.intervalo);
         this.perdiste();
         setTimeout(() => {
-          this.router.navigate(['principal']);
+          this.router.navigate(['menu/principal']);
         }, 3000);
       }
     }, 1000);
@@ -62,6 +63,7 @@ export class PreguntasPage implements OnInit {
     return [...t];
   }
   async openHelp(){
+    console.log(this.ayuda.ayuda2.length);
     if (this.ayuda.ayuda1 == 1 && this.ayuda.ayuda2.length !== 0) {
       this.global.mensaje('Se le acabarón las ayuda jajajaja', 1000, 'danger');
     }else{
@@ -80,6 +82,8 @@ export class PreguntasPage implements OnInit {
               });
               texto += `\nAyudame con esta pregunta.`;
               console.log(texto);
+              this.share.share(texto);
+              this.duracion += 60;
               this.ayuda.ayuda1 = 1;
             }else {
               this.global.mensaje('Ya utilizo esta ayuda', 1000, 'danger');
@@ -130,7 +134,9 @@ export class PreguntasPage implements OnInit {
             this.global.persona.puntajes[this.level-1] = this.puntajeTotal;
             this.db.updatePuntaje(this.global.persona.id,this.global.persona.puntajes).then(_=> console.log('correcto')).catch(_=> console.log('error'));
           }
-          this.ayuda.ayuda2 = [-1, -1];
+          if (this.ayuda.ayuda2.length !== 0) {
+            this.ayuda.ayuda2 = [-1, -1];
+          }
         }
       }]
     });
@@ -148,7 +154,7 @@ export class PreguntasPage implements OnInit {
             this.global.persona.puntajes[this.level-1] = this.puntajeTotal;
             this.db.updatePuntaje(this.global.persona.id,this.global.persona.puntajes).then(_=> console.log('correcto')).catch(_=> console.log('error'));
           }
-          this.router.navigate(['principal']);
+          this.router.navigate(['/menu/principal']);
         }
       }]
     });
@@ -162,7 +168,7 @@ export class PreguntasPage implements OnInit {
       buttons: [{
         text: 'OK',
         handler: ()=>{
-          this.router.navigate(['principal']);
+          this.router.navigate(['/menu/principal']);
         }
       }]
     });
@@ -185,7 +191,7 @@ export class PreguntasPage implements OnInit {
       this.global.mensaje('Respuesta incorrecta', 2000, 'danger');
       this.perdiste();
       setTimeout(() => {
-        this.router.navigate(['principal']);
+        this.router.navigate(['menu/principal']);
       }, 3000);
     }
   }
@@ -213,6 +219,7 @@ export class PreguntasPage implements OnInit {
     this.colorDuracion = '';
     this.loadDuraciones();
     this.empezar();
+    this.btnContinuar = true;
   }
 
   loadDuraciones(){
@@ -220,11 +227,11 @@ export class PreguntasPage implements OnInit {
     for (let index = 0; index < this.puntuaciones.length; index++) {
       this.duraciones[index] = (index+1) * division
     }
-    console.log(this.duraciones);
   }
 
   loadPreguntas(){
     this.db.selectWhere('preguntas', 'level', this.level,1,this.global.persona.programa).subscribe((preguntas:iPregunta[]) =>{
+      console.log(preguntas);
       const pregs: iPregunta[] = [];
       preguntas.forEach(pregunta => {
         pregs.push(pregunta);

@@ -5,12 +5,13 @@ import { GlobalService } from 'src/app/services/global.service';
 import { iPersona, iPrograma } from 'src/app/interfaces/interface';
 
 @Component({
-  selector: 'app-rankings',
-  templateUrl: './rankings.page.html',
-  styleUrls: ['./rankings.page.scss'],
+  selector: 'app-ranking-programa',
+  templateUrl: './ranking-programa.page.html',
+  styleUrls: ['./ranking-programa.page.scss'],
 })
-export class RankingsPage implements OnInit {
+export class RankingProgramaPage implements OnInit {
 
+  
   segment = '-1';
   jugadores: iPersona[] = [];
   jugadoresAux : iPersona[] = [];
@@ -28,27 +29,24 @@ export class RankingsPage implements OnInit {
   loadJugadores(){
     this.bd.selectWhere('personas', 'rol', 0).subscribe((jugadores:iPersona[])=>{
       this.jugadores = [];
+      this.jugadoresAux = [];
       jugadores.forEach((jugador, j) => {
-        jugadores[j].puntajeMax = Math.max(...jugador.puntajes);
+        if (jugador.programa === this.global.persona.programa) {    
+          this.jugadores.push(jugador);
+          this.jugadores[j].puntajeMax = Math.max(...jugador.puntajes);
+          this.jugadores.sort((a, b)=> {return b.puntajeMax - a.puntajeMax});
+          this.jugadoresAux.push(jugadores[j]);
+        }
       });
-      jugadores.sort((a, b)=> {return b.puntajeMax - a.puntajeMax});
-      this.jugadores = jugadores;
-      this.jugadoresAux = jugadores;
+      
     })
   }
-
-  ordernar(array: iPersona[]){
-    return array.sort(function (a, b) {
-      if (Math.max(...a.puntajes) > Math.max(...b.puntajes)) {
-        return 1;
-      }
-      if (Math.max(...a.puntajes) < Math.max(...b.puntajes)) {
-        return -1;
-      }
-      // a must be equal to b
-      return 0;
-    });
-  }
+  // jugadores.forEach((jugador, j) => {
+  //   jugadores[j].puntajeMax = Math.max(...jugador.puntajes);
+  // });
+  // jugadores.sort((a, b)=> {return b.puntajeMax - a.puntajeMax});
+  // this.jugadores = jugadores;
+  // this.jugadoresAux = jugadores;
 
   loadProgramas(){
     this.bd.getList('programas').subscribe((programas:iPrograma[])=>{
@@ -127,5 +125,4 @@ export class RankingsPage implements OnInit {
     return puntajes[index];
     // return Math.max(...puntajes);
   }
-
 }

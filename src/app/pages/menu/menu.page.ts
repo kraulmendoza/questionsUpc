@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterEvent } from '@angular/router';
 import { GlobalService } from 'src/app/services/global.service';
 import { LogueoService } from 'src/app/services/logueo.service';
 import { MenuController } from '@ionic/angular';
+import { iPersona } from 'src/app/interfaces/interface';
 
 @Component({
   selector: 'app-menu',
@@ -14,54 +15,57 @@ export class MenuPage implements OnInit {
     {
       title: 'Principal',
       url: '/menu/consultar',
-      icon: 'person'
+      icon: 'home'
     },{
       title: 'Usuarios',
       url: '/menu/add-user',
-      icon: 'person'
+      icon: 'contacts'
     },
     {
       title: 'Programas',
       url: '/menu/programa',
-      icon: 'person'
+      icon: 'apps'
     },{
       title: 'Preguntas',
       url: '/menu/add-preguntas',
-      icon: 'person'
+      icon: 'help'
     },{
-      title: 'Estadisticas',
-      url: '/menu/estadistica',
-      icon: 'person'
+      title: 'Rankings',
+      url: '/menu/tab',
+      icon: 'analytics'
     },
   ];
   pagesDocente = [
     {
       title: 'Preguntas',
       url: '/menu/add-preguntas',
-      icon: 'person'
+      icon: 'help'
     },{
-      title: 'Asignatura',
-      url: '/menu/asignatura',
-      icon: 'person'
-    },{
-      title: 'Resultados',
-      url: '/menu/resultados',
-      icon: 'person'
+      title: 'Rankings',
+      url: '/menu/tab',
+      icon: 'analytics'
     },
   ];
   pagesEstudiante = [
     {
       title: 'Jugar',
       url: '/menu/principal',
-      icon: 'person'
+      icon: 'play'
     },{
       title: 'Rankings',
-      url: '/menu/rankings',
-      icon: 'person'
+      url: '/menu/tab',
+      icon: 'analytics'
     },
   ];
   pages = [];
-  constructor(private router: Router, private global: GlobalService, private logueo: LogueoService, private menu: MenuController) { }
+  selectedPath = '';
+  constructor(private router: Router, private global: GlobalService, private logueo: LogueoService, private menu: MenuController) {
+    this.router.events.subscribe((event: RouterEvent) => {
+      if (event && event.url) {
+        this.selectedPath = event.url;
+      }
+    });
+  }
 
   ngOnInit() {
     switch (this.global.persona.rol) {
@@ -88,5 +92,6 @@ export class MenuPage implements OnInit {
   salir(){
     this.logueo.cerrarSesion();
     this.router.navigate(['']);
+    this.global.persona = <iPersona>{}
   }
 }

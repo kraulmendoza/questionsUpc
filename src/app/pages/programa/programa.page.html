@@ -19,10 +19,6 @@
               <ion-label position="floating">Nombre del Programa</ion-label>
               <ion-input type="text" [(ngModel)]="programa.name"></ion-input>
             </ion-item>
-            <ion-item>
-              <ion-label position="floating">Abreviatura del Programa</ion-label>
-              <ion-input type="text" [(ngModel)]="programa.abreviatura"></ion-input>
-            </ion-item>
             <ion-item lines="none">
               <ion-label text-center>
                 <ion-text color="primary">
@@ -53,7 +49,7 @@
                 
               </ion-item>
           </ion-list>
-          <ion-button expand="block" shape="round" (click)="addPrograma()">
+          <ion-button expand="block" shape="round" (click)="addPrograma()" [disabled]="programa.id === undefined || programa.name === undefined">
             Registrar
           </ion-button>
         </div>

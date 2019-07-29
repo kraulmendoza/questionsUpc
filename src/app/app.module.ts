@@ -20,6 +20,7 @@ import { LogueoService } from './services/logueo.service';
 import { AuthGuard } from './guard/auth.guard';
 import { LoginGuard } from './guard/login.guard';
 
+import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -32,6 +33,7 @@ import { LoginGuard } from './guard/login.guard';
     BdService,
     LogueoService,
     AngularFirestore,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

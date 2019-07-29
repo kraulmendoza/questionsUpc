@@ -1,9 +1,12 @@
-<ion-header no-border>
+<ion-header no-border no-padding>
   <ion-toolbar>
     <ion-title>Preguntas</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button menu="menuId"></ion-menu-button>
     </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="global.persona.rol == 1" style="--min-height: 20px">
+    <ion-title>{{namePrograma}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -30,6 +33,7 @@
                     <ion-item *ngFor="let item of opciones; let i = index">
                         <ion-input type="text" placeholder="Opción {{i+1}}" [(ngModel)]="pregunta.opciones[i]" [ngModelOptions]="{standalone: true}"></ion-input>
                         <ion-radio value="{{i+1}}" slot="start"></ion-radio>
+                        <!-- [checked]="respuesta != i+1 -->
                     </ion-item>
                 </ion-list>
               </ion-radio-group>
@@ -64,10 +68,20 @@
         <ion-list padding-top>
           <ng-container *ngFor="let programa of programas">
             <ng-container *ngIf="programa.id === searchPrograma">
-                <ion-item *ngFor="let pregunta of programa.preguntas; let i = index" lines="none">
-                    <ion-note slot="start">{{i+1}}</ion-note>
-                    <ion-label text-wrap>{{pregunta.descripcion}}</ion-label>
+              <ion-list>
+                <ion-item-sliding *ngFor="let pregunta of programa.preguntas; let i = index" #slidingItem>
+                    <ion-item lines="none">
+                        <ion-note slot="start">{{i+1}}</ion-note>
+                        <ion-label text-wrap>{{pregunta.descripcion}}</ion-label>
                   </ion-item>
+                  <ion-item-options side="start" (ionSwipe)="delete(slidingItem,pregunta, programa.id)">
+                    <ion-item-option (click)="delete(slidingItem,pregunta, programa.id)" color="ligth"><ion-icon name="trash" slot="icon-only" color="danger"></ion-icon></ion-item-option>
+                  </ion-item-options>
+                  <!-- <ion-item-options side="end">
+                    <ion-item-option (click)="unread(item)">Unread</ion-item-option>
+                  </ion-item-options> -->
+                </ion-item-sliding>
+              </ion-list>
             </ng-container>
           </ng-container>
         </ion-list>

@@ -13,18 +13,18 @@ export class PrincipalPage implements OnInit {
   level = '';
   jugador: iPersona = <iPersona> {};
   programa:iPrograma = <iPrograma> {};
-  constructor(private global: GlobalService, private db: BdService, private router: Router) { }
+  constructor(public global: GlobalService, private db: BdService, private router: Router) { }
 
   ngOnInit() {
     this.jugador = this.global.persona;
-    this.db.getDato('programas', this.jugador.programa).subscribe((programa: iPrograma) => {
+    this.db.getDato('programas', this.global.persona.programa).subscribe((programa: iPrograma) => {
       this.programa = programa;
     })
   }
 
   jugar(){
     if (this.level !== '') {
-      this.router.navigate(['/preguntas', this.level]); 
+      this.router.navigate(['/menu/principal/preguntas', this.level]); 
     }else {this.global.mensaje('Debe seleccionar un nivel', 2000, 'danger')}
   }
 

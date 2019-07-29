@@ -16,6 +16,7 @@ export class ProgramaPage implements OnInit {
 
   ngOnInit() {
     this.loadProgramas();
+    console.log(this.programa.id);
   }
 
   selectSement(e){

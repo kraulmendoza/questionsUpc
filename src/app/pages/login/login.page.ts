@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
     this.logueo.loginUser(user, this.user.pass).then((auth)=>{
       this.bd.getDato('personas', auth.user.uid).subscribe((per: iPersona)=>{
         this.global.persona = per;
-        console.log(per);
+        console.log(this.global.persona);
         this.route.navigate(['/menu']);
       })
     })

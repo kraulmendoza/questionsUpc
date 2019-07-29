@@ -20,8 +20,7 @@ export class LoginGuard implements CanActivate {
         if (res) {
           this.bd.getDato('personas', res.uid).subscribe((per:iPersona) =>{
             this.global.persona = per;
-            console.log(per)
-            this.router.navigate(['menu']);
+            this.router.navigate(['/menu']);
           })
           return false;
         } else {

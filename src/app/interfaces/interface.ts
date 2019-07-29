@@ -1,7 +1,6 @@
 export interface iPrograma{
     id: string;
     name: string;
-    abreviatura: string;
     partida: IPartida;
     preguntas?: iPregunta[]
 }
@@ -15,10 +14,11 @@ export interface iPersona{
     user: string;
     id?:string;
     puntajes?: number[];
+    puntajeMax?:number;
 }
 
 export interface iPregunta{
-    id?: number;
+    id?: string;
     descripcion: string;
     opciones: string[];
     respuesta: number;

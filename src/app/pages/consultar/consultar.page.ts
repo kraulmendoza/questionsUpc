@@ -9,6 +9,7 @@ import { BdService } from 'src/app/services/bd.service';
 })
 export class ConsultarPage implements OnInit {
   programas: iPrograma[] = [];
+  preguntaArray = [];
   preguntaLen = 0;
   constructor(private bd: BdService) { }
 
@@ -19,17 +20,24 @@ export class ConsultarPage implements OnInit {
   loadProgramas(){
     this.bd.getList('programas').subscribe((progs:iPrograma[]) => {
       this.programas = [];
-      this.preguntaLen = 0;
+      this.preguntaArray = [];
       progs.forEach((programa,index) => {
         this.programas.push(programa);
-        this.programas[index].preguntas = [];
+        this.programas[index].preguntas = new Array();
         this.bd.getList('preguntas',1,programa.id).subscribe((preguntas:iPregunta[])=>{
-          this.programas[index].preguntas = [];
+          this.preguntaLen = 0;
+          this.programas[index].preguntas = new Array();
           this.programas[index].preguntas = preguntas;
-          this.preguntaLen += preguntas.length;
-        })
+          this.preguntaArray[index] = preguntas.length;
+          this.getPreguntas();
+        });
       });
     });
   }
 
+  getPreguntas(){
+    this.preguntaArray.forEach(pre => {
+      this.preguntaLen += pre;
+    });
+  }
 }

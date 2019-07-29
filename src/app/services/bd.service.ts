@@ -76,6 +76,10 @@ export class BdService {
     return this.firestore.collection('personas').doc(id).update({puntajes: puntjes})
   }
 
+  public deleteQuestion(id: string, idPrograma: string){
+    return this.firestore.collection('programas').doc(idPrograma).collection('preguntas').doc(id).delete();
+  }
+
 
 
 
